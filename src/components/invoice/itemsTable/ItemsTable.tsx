@@ -39,7 +39,8 @@ export const ItemsTable = ({ invoice, handleChangeInvoice, handleChangeItem, han
             {
                 !printMode &&
                 <AddItem
-
+                    handleAddItem={handleAddItem}
+                    backgroundColor={invoice.items.length % 2 === 1 ? '#FFF' : '#f9f9f9'}
                 />
             }
             <SubTotal
