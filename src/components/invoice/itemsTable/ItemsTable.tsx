@@ -49,7 +49,10 @@ export const ItemsTable = ({ invoice, handleChangeInvoice, handleChangeItem, han
                 backgroundColor={invoice.items.length % 2 === 0 ? '#FFF' : '#f9f9f9'}
             />
             <Tax
-
+                value={calculateTax(invoice)}
+                tax={invoice.tax} handleOnChange={handleChangeInvoice}
+                currencySymbol={currencySymbol}
+                backgroundColor={invoice.items.length % 2 === 1 ? '#FFF' : '#f9f9f9'}
             />
             <GrandTotal
 
