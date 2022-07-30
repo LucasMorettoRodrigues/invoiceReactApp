@@ -22,8 +22,8 @@ export const ItemsTable = ({ invoice, handleChangeInvoice, handleChangeItem, han
 
     return (
         <>
-            <Header
-            />
+            <Header currencySymbol={currencySymbol} />
+
             {invoice.items.map((item, index) => (
                 <Item
 
