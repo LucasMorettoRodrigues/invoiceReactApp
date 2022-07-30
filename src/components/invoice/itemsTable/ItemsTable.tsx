@@ -4,7 +4,7 @@ import { calculateGrandTotal, calculateTax, invoiceSubTotal } from "../../../uti
 import { AddItem } from "./rows/AddItem"
 import { GrandTotal } from "./rows/GrandTotal"
 import { Header } from "./rows/Header"
-import { Item } from "./rows/Item"
+import { TableItem } from "./rows/TableItem"
 import { SubTotal } from "./rows/SubTotal"
 import { Tax } from "./rows/Tax"
 
@@ -25,8 +25,15 @@ export const ItemsTable = ({ invoice, handleChangeInvoice, handleChangeItem, han
             <Header currencySymbol={currencySymbol} />
 
             {invoice.items.map((item, index) => (
-                <Item
-
+                <TableItem
+                    key={index}
+                    item={item}
+                    index={index}
+                    handleRemoveItem={handleRemoveItem}
+                    handleOnChange={handleChangeItem}
+                    printMode={printMode}
+                    currencySymbol={currencySymbol}
+                    backgroundColor={index % 2 === 1 ? '#FFF' : '#f9f9f9'}
                 />
             ))}
             {
