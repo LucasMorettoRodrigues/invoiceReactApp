@@ -11,6 +11,7 @@ import { Infos } from './components/invoice/infos/Infos';
 import { ItemsTable } from './components/invoice/itemsTable/ItemsTable';
 import { Footer } from './components/layout/Footer';
 import { TInvoice } from './types/Invoice';
+import { CurrencyService } from './services/CurrencyService';
 
 const InvoiceContainer = styled.div`
   width: 800px;
@@ -26,6 +27,7 @@ const InvoiceContainer = styled.div`
   }
 `
 const LocalStorage = new LocalStorageService()
+const currencies = new CurrencyService().all()
 
 export const App = () => {
 
@@ -96,7 +98,13 @@ export const App = () => {
                     logo={logoState}
                     readUrl={readUrl}
                 />
-                <Infos />
+                <Infos
+                    invoice={invoiceState}
+                    handleChangeInvoice={handleChangeInvoice}
+                    currency={currency}
+                    handleChangeCurrency={(currencyName) => setCurrency(currencies.find(i => i.name === currencyName)!)}
+                    printMode={printMode}
+                />
                 <ItemsTable />
                 <Actions />
             </InvoiceContainer>
