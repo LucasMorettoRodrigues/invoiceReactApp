@@ -1,3 +1,5 @@
+import { TInvoice } from "../types/Invoice";
+
 export class LocalStorageService {
     // Returns true if there is a logo stored
     hasLogo() {
@@ -33,7 +35,7 @@ export class LocalStorageService {
     };
 
     // Set a new invoice to Local Storage
-    setInvoice(invoice: any) {
+    setInvoice(invoice: TInvoice) {
         localStorage['invoice'] = JSON.stringify(invoice);
     };
 
