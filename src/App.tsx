@@ -87,6 +87,16 @@ export const App = () => {
         LocalStorage.setInvoice(newInvoice)
     }
 
+    // Handle Reset Invoice
+    const handleReset = () => {
+        const confirmClear = window.confirm('Are you sure you would like to clear the invoice?');
+        if (confirmClear) {
+            LocalStorage.clearLocalStorage()
+            setLogoState(DEFAULT_LOGO)
+            setInvoiceState(DEFAULT_INVOICE)
+        }
+    }
+
     return (
         <>
             <InvoiceContainer>
@@ -106,7 +116,11 @@ export const App = () => {
                     printMode={printMode}
                 />
                 <ItemsTable />
-                <Actions />
+                <Actions
+                    handleReset={handleReset}
+                    handlePrintMode={() => setPrintMode(!printMode)}
+                    printMode={printMode}
+                />
             </InvoiceContainer>
             <Footer />
         </>
