@@ -122,7 +122,9 @@ export const App = () => {
                     printMode={printMode}
                 />
             </InvoiceContainer>
-            <Footer />
+            <Footer
+                printMode={printMode}
+            />
         </>
     );
 }
