@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+    font-family: "Helvetica Neue",
+        Helvetica,
+        Arial,
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.428571429;
+}
