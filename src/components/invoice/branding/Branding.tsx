@@ -1,7 +1,7 @@
 import { ChangeEvent, useRef, useState } from "react"
 import styled from "styled-components"
 import { TInvoice } from "../../../types/Invoice"
-import { Input } from "../UI/Input"
+import { Input } from "../../UI/Input"
 
 const Container = styled.div`
   display: flex;
