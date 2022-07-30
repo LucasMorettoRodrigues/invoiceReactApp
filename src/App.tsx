@@ -70,6 +70,41 @@ export const App = () => {
         })
     }
 
+    // Update Invoice's Item
+    const handleChangeItem = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+        const newItem = { ...invoiceState.items[index], [e.target.name]: e.target.value }
+
+        saveInvoice({
+            ...invoiceState,
+            items: invoiceState.items.map((item, itemIndex) => (
+                itemIndex === index
+                    ? newItem
+                    : item
+            ))
+        })
+    }
+
+    // Add new Item to Invoice
+    const handleAddItem = () => {
+        const newItem = { description: '', qty: 0, cost: 0 }
+
+        saveInvoice({
+            ...invoiceState,
+            items: [...invoiceState.items, newItem]
+        })
+    }
+
+    // Remove Item from Invoice
+    const handleRemoveItem = (index: number) => {
+        let newItems = [...invoiceState.items]
+        newItems.splice(index, 1)
+
+        saveInvoice({
+            ...invoiceState,
+            items: newItems
+        })
+    }
+
     // Reads a url and set new logo
     const readUrl = (input: ChangeEvent<HTMLInputElement>) => {
         if (input.target.files && input.target.files[0]) {
@@ -116,7 +151,15 @@ export const App = () => {
                     handleChangeCurrency={(currencyName) => setCurrency(currencies.find(i => i.name === currencyName)!)}
                     printMode={printMode}
                 />
-                <ItemsTable />
+                <ItemsTable
+                    invoice={invoiceState}
+                    handleChangeInvoice={handleChangeInvoice}
+                    handleChangeItem={handleChangeItem}
+                    handleAddItem={handleAddItem}
+                    handleRemoveItem={handleRemoveItem}
+                    printMode={printMode}
+                    currencySymbol={currency.symbol}
+                />
                 <Actions
                     handleReset={handleReset}
                     handlePrintMode={() => setPrintMode(!printMode)}
