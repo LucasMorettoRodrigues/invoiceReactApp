@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { DEFAULT_CURRENCY, DEFAULT_INVOICE, DEFAULT_LOGO } from './constants/DefaultValues';
 import { LocalStorageService } from './services/LocalStorageService';
@@ -10,6 +10,7 @@ import { Header } from './components/invoice/header/Header';
 import { Infos } from './components/invoice/infos/Infos';
 import { ItemsTable } from './components/invoice/itemsTable/ItemsTable';
 import { Footer } from './components/layout/Footer';
+import { TInvoice } from './types/Invoice';
 
 const InvoiceContainer = styled.div`
   width: 800px;
@@ -47,11 +48,54 @@ export const App = () => {
         })()
     }, [])
 
+    // Update Invoice
+    const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>, key?: keyof TInvoice) => {
+        if (key === 'customer_info' || key === 'company_info') {
+            saveInvoice({
+                ...invoiceState,
+                [key]: {
+                    ...invoiceState[key],
+                    [e.target.name]: e.target.value
+                }
+            })
+            return
+        }
+
+        saveInvoice({
+            ...invoiceState,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    // Reads a url and set new logo
+    const readUrl = (input: ChangeEvent<HTMLInputElement>) => {
+        if (input.target.files && input.target.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e: any) {
+                setLogoState(e.target.result)
+                LocalStorage.setLogo(e.target.result);
+            }
+            reader.readAsDataURL(input.target.files[0]);
+        }
+    };
+
+    // Set new Invoice and update state
+    const saveInvoice = (newInvoice: TInvoice) => {
+        setInvoiceState(newInvoice)
+        LocalStorage.setInvoice(newInvoice)
+    }
+
     return (
         <>
             <InvoiceContainer>
                 <Header />
-                <Branding />
+                <Branding
+                    invoice={invoiceState}
+                    handleChangeInvoice={handleChangeInvoice}
+                    printMode={printMode}
+                    logo={logoState}
+                    readUrl={readUrl}
+                />
                 <Infos />
                 <ItemsTable />
                 <Actions />
