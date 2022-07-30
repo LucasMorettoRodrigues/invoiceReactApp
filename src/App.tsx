@@ -1,7 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { DEFAULT_CURRENCY, DEFAULT_INVOICE, DEFAULT_LOGO } from './constants/DefaultValues';
+import { DEFAULT_CURRENCY, DEFAULT_INVOICE } from './constants/DefaultValues';
 import { LocalStorageService } from './services/LocalStorageService';
+import DEFAULT_LOGO from './images/metaware_logo.png'
 
 // Components
 import { Actions } from './components/invoice/actions/Actions';
