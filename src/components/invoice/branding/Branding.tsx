@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from "react"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { TInvoice } from "../../../types/Invoice"
 import { Input } from "../../UI/Input"
@@ -62,6 +62,7 @@ export const Branding = ({ invoice, handleChangeInvoice, printMode, logo, readUr
         <Container>
             <InnerContainer>
                 <Input
+                    autoFocus={true}
                     label='Invoice #'
                     type='text'
                     name='invoice_number'

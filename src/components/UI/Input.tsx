@@ -30,29 +30,31 @@ const SInput = styled.input<{ fontWeight?: string, textAlign?: string }>`
 `
 
 type Props = {
-    label?: string,
-    name: string,
-    type: string,
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void,
-    fontWeight?: string,
-    value: string | number,
-    textAlign?: string,
-    placeholder?: string
+  label?: string,
+  name: string,
+  type: string,
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void,
+  fontWeight?: string,
+  value: string | number,
+  textAlign?: string,
+  placeholder?: string
+  autoFocus?: boolean
 }
 
-export const Input = ({ label, name, type, onChange, value, fontWeight, textAlign, placeholder }: Props) => {
-    return (
-        <Container>
-            {label && <Label htmlFor={name} fontWeight={fontWeight}>{label}</Label>}
-            <SInput
-                name={name}
-                type={type}
-                fontWeight={fontWeight}
-                onChange={(e) => onChange(e)}
-                value={value}
-                textAlign={textAlign}
-                placeholder={placeholder}>
-            </SInput>
-        </Container>
-    )
+export const Input = ({ label, name, type, onChange, value, fontWeight, textAlign, placeholder, autoFocus }: Props) => {
+  return (
+    <Container>
+      {label && <Label htmlFor={name} fontWeight={fontWeight}>{label}</Label>}
+      <SInput
+        autoFocus={autoFocus}
+        name={name}
+        type={type}
+        fontWeight={fontWeight}
+        onChange={(e) => onChange(e)}
+        value={value}
+        textAlign={textAlign}
+        placeholder={placeholder}>
+      </SInput>
+    </Container>
+  )
 }
