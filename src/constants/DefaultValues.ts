@@ -24,7 +24,7 @@ export const DEFAULT_INVOICE = {
 }
 
 // The default currency for the invoice
-export const DEFAULT_CURRENCY = { name: 'US Dollar ($)', symbol: '$' }
+export const DEFAULT_CURRENCY = { name: 'US Dollar ($)', symbol: '$', code: 'USD' }
 
 // The default logo for the invoice
 export const DEFAULT_LOGO = img
