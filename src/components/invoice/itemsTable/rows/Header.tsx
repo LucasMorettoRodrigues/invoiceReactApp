@@ -20,7 +20,7 @@ export const Header = () => {
     return (
         <Container>
             <RowItem style={{ width: '36px' }}></RowItem>
-            <RowItem flex={6}>Description</RowItem>
+            <RowItem flex={4}>Description</RowItem>
             <RowItem flex={2}>Quantity</RowItem>
             <RowItem flex={2}>Cost {symbol}</RowItem>
             <RowItem flex={2}>Discount(%)</RowItem>

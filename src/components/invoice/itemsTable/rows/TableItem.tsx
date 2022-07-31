@@ -78,7 +78,7 @@ export const TableItem = ({ item, index }: Props) => {
                     </Button>
                 }
             </RowItem>
-            <RowItem flex={6}>
+            <RowItem flex={4}>
                 <InputController style={{ maxWidth: '187px' }}>
                     <Input
                         name="description"
