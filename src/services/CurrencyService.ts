@@ -1,5 +1,5 @@
 const KEY = 'a3f711bed1f6e8fe47c45225'
-const ADDRESS = `https://v6.exchangerate-api.com/v6/${KEY}`
+const API_ADDRESS = `https://v6.exchangerate-api.com/v6/${KEY}`
 
 export class CurrencyService {
     all() {
@@ -40,7 +40,7 @@ export class CurrencyService {
     async getConversionRate(currencyOne: string, currencyTwo: string) {
         try {
             let response = await fetch(
-                `${ADDRESS}/pair/${currencyOne}/${currencyTwo}`
+                `${API_ADDRESS}/pair/${currencyOne}/${currencyTwo}`
             ) as any
             response = await response.json()
             return response.conversion_rate

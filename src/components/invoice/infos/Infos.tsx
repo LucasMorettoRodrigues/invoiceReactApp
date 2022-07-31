@@ -1,13 +1,12 @@
 import styled from "styled-components"
 import { ChangeEvent } from "react"
-import { CurrencyService } from "../../../services/CurrencyService"
 import { TInvoice } from "../../../types/Invoice"
 import { Input } from "../../UI/Input"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { printModeRecoilState } from "../../../state/PrintMode"
 import { invoiceRecoilState } from "../../../state/Invoice"
 import { LocalStorageService } from "../../../services/LocalStorageService"
-import { currencyRecoilState } from "../../../state/Currency"
+import { CurrencySelector } from "./CurrencySelector"
 
 const RowInfosContainer = styled.div`
   display: flex;
@@ -24,18 +23,12 @@ const InputController = styled.div<{ float?: string }>`
   width: 300px;
   float: ${props => props.float === 'right' ? 'right' : null};
 `
-const Select = styled.select`
-  font-size: 14px;
-`
-const Option = styled.option``
 
-const currencies = new CurrencyService().all()
 const LocalStorage = new LocalStorageService()
 
 export const Infos = () => {
 
     const [invoiceState, setInvoiceState] = useRecoilState(invoiceRecoilState)
-    const [currency, setCurrency] = useRecoilState(currencyRecoilState)
     const printMode = useRecoilValue(printModeRecoilState)
 
     // Update Invoice
@@ -109,19 +102,7 @@ export const Infos = () => {
                 {
                     !printMode &&
                     <InputController>
-                        <Select
-                            value={JSON.stringify(currency)}
-                            onChange={(e) => setCurrency(JSON.parse(e.target.value))}
-                        >
-                            {currencies.map((currency) => (
-                                <Option
-                                    key={currency.name}
-                                    value={JSON.stringify(currency)}
-                                >
-                                    {currency.name}
-                                </Option>
-                            ))}
-                        </Select>
+                        <CurrencySelector />
                     </InputController>
                 }
             </InputsWrapper>
