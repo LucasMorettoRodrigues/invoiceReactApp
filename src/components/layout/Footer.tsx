@@ -1,4 +1,6 @@
+import { useRecoilValue } from "recoil"
 import styled from "styled-components"
+import { printModeRecoilState } from "../../state/PrintMode"
 
 const Text = styled.div`
     font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
@@ -11,11 +13,8 @@ const HighLight = styled.span`
     color: red;
 `
 
-type Props = {
-    printMode: boolean
-}
-
-export const Footer = ({ printMode }: Props) => {
+export const Footer = () => {
+    const printMode = useRecoilValue(printModeRecoilState)
 
     if (printMode) {
         return <></>
