@@ -38,16 +38,9 @@ export const ItemsTable = ({ invoice, handleChangeInvoice, handleChangeItem, han
             ))}
             {
                 !printMode &&
-                <AddItem
-                    handleAddItem={handleAddItem}
-                    backgroundColor={invoice.items.length % 2 === 1 ? '#FFF' : '#f9f9f9'}
-                />
+                <AddItem />
             }
-            <SubTotal
-                value={invoiceSubTotal(invoice)}
-                currencySymbol={currencySymbol}
-                backgroundColor={invoice.items.length % 2 === 0 ? '#FFF' : '#f9f9f9'}
-            />
+            <SubTotal />
             <Tax
                 value={calculateTax(invoice)}
                 tax={invoice.tax} handleOnChange={handleChangeInvoice}

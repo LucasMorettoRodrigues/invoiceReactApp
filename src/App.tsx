@@ -32,7 +32,6 @@ const InvoiceContainer = styled.div`
   }
 `
 const LocalStorage = new LocalStorageService()
-const currencies = new CurrencyService().all()
 
 export const App = () => {
 
@@ -108,18 +107,6 @@ export const App = () => {
             items: newItems
         })
     }
-
-    // Reads a url and set new logo
-    const readUrl = (input: ChangeEvent<HTMLInputElement>) => {
-        if (input.target.files && input.target.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e: any) {
-                setLogoState(e.target.result)
-                LocalStorage.setLogo(e.target.result);
-            }
-            reader.readAsDataURL(input.target.files[0]);
-        }
-    };
 
     // Set new Invoice and update state
     const saveInvoice = (newInvoice: TInvoice) => {
