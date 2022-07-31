@@ -12,6 +12,7 @@ import { Header } from './components/invoice/header/Header';
 import { Infos } from './components/invoice/infos/Infos';
 import { ItemsTable } from './components/invoice/itemsTable/ItemsTable';
 import { Footer } from './components/layout/Footer';
+import { CurrencyService } from './services/CurrencyService';
 
 const InvoiceContainer = styled.div`
   width: 800px;
@@ -31,6 +32,11 @@ const LocalStorage = new LocalStorageService()
 export const App = () => {
     const setInvoiceState = useSetRecoilState(invoiceRecoilState);
     const setLogoState = useSetRecoilState(logoRecoilState);
+
+    const test = async () => {
+        const res = await new CurrencyService().getConversionRate('EUR', 'GBP')
+        console.log(res)
+    }
 
     useEffect(() => {
         (function init() {
