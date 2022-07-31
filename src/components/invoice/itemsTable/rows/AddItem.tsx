@@ -23,7 +23,7 @@ export const AddItem = () => {
 
     // Add new Item to Invoice
     const handleAddItem = () => {
-        const newItem = { description: '', qty: 0, cost: 0 }
+        const newItem = { description: '', qty: 0, cost: 0, discount: 0 }
 
         saveInvoice({
             ...invoiceState,
