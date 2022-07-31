@@ -1,8 +1,11 @@
-import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { DEFAULT_CURRENCY, DEFAULT_INVOICE } from './constants/DefaultValues';
+import { ChangeEvent, useEffect } from 'react';
+import { DEFAULT_INVOICE, DEFAULT_LOGO } from './constants/DefaultValues';
 import { LocalStorageService } from './services/LocalStorageService';
-import DEFAULT_LOGO from './images/metaware_logo.png'
+import { invoiceRecoilState } from './state/Invoice';
+import { logoRecoilState } from './state/Logo';
+import { currencyRecoilState } from './state/Currency';
+import { printModeRecoilState } from './state/PrintMode';
 
 // Components
 import { Actions } from './components/invoice/actions/Actions';
@@ -13,6 +16,7 @@ import { ItemsTable } from './components/invoice/itemsTable/ItemsTable';
 import { Footer } from './components/layout/Footer';
 import { TInvoice } from './types/Invoice';
 import { CurrencyService } from './services/CurrencyService';
+import { useRecoilState } from 'recoil';
 
 const InvoiceContainer = styled.div`
   width: 800px;
@@ -32,10 +36,10 @@ const currencies = new CurrencyService().all()
 
 export const App = () => {
 
-    const [invoiceState, setInvoiceState] = useState(DEFAULT_INVOICE)
-    const [logoState, setLogoState] = useState(DEFAULT_LOGO)
-    const [currency, setCurrency] = useState(DEFAULT_CURRENCY)
-    const [printMode, setPrintMode] = useState(false)
+    const [invoiceState, setInvoiceState] = useRecoilState(invoiceRecoilState);
+    const [logoState, setLogoState] = useRecoilState(logoRecoilState);
+    const [currency, setCurrency] = useRecoilState(currencyRecoilState);
+    const [printMode, setPrintMode] = useRecoilState(printModeRecoilState);
 
     useEffect(() => {
         (function init() {

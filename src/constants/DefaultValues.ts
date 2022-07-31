@@ -1,3 +1,5 @@
+import img from '../images/metaware_logo.png'
+
 // The invoice displayed when the user first uses the app
 export const DEFAULT_INVOICE = {
     tax: 13.00,
@@ -25,5 +27,5 @@ export const DEFAULT_INVOICE = {
 export const DEFAULT_CURRENCY = { name: 'US Dollar ($)', symbol: '$' }
 
 // The default logo for the invoice
-export const DEFAULT_LOGO = 'images/metaware_logo.png'
+export const DEFAULT_LOGO = img
 
