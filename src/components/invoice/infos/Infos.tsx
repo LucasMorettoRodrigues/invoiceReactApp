@@ -3,6 +3,11 @@ import { ChangeEvent } from "react"
 import { CurrencyService } from "../../../services/CurrencyService"
 import { TInvoice } from "../../../types/Invoice"
 import { Input } from "../../UI/Input"
+import { useRecoilState, useRecoilValue } from "recoil"
+import { printModeRecoilState } from "../../../state/PrintMode"
+import { invoiceRecoilState } from "../../../state/Invoice"
+import { LocalStorageService } from "../../../services/LocalStorageService"
+import { currencyRecoilState } from "../../../state/Currency"
 
 const RowInfosContainer = styled.div`
   display: flex;
@@ -24,22 +29,39 @@ const Select = styled.select`
 `
 const Option = styled.option``
 
-type Currency = {
-    name: string,
-    symbol: string
-}
-
-type Props = {
-    currency: Currency,
-    handleChangeCurrency: (currencyName: string) => void,
-    printMode: boolean,
-    invoice: TInvoice,
-    handleChangeInvoice: (e: ChangeEvent<HTMLInputElement>, key: keyof TInvoice) => void
-}
-
 const currencies = new CurrencyService().all()
+const LocalStorage = new LocalStorageService()
 
-export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, handleChangeInvoice }: Props) => {
+export const Infos = () => {
+
+    const [invoiceState, setInvoiceState] = useRecoilState(invoiceRecoilState)
+    const [currency, setCurrency] = useRecoilState(currencyRecoilState)
+    const printMode = useRecoilValue(printModeRecoilState)
+
+    // Update Invoice
+    const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>, key?: keyof TInvoice) => {
+        if (key === 'customer_info' || key === 'company_info') {
+            saveInvoice({
+                ...invoiceState,
+                [key]: {
+                    ...invoiceState[key],
+                    [e.target.name]: e.target.value
+                }
+            })
+            return
+        }
+
+        saveInvoice({
+            ...invoiceState,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    // Set new Invoice and update state
+    const saveInvoice = (newInvoice: TInvoice) => {
+        setInvoiceState(newInvoice)
+        LocalStorage.setInvoice(newInvoice)
+    }
 
     return (
         <RowInfosContainer>
@@ -49,7 +71,7 @@ export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, hand
                         type='text'
                         name='name'
                         onChange={(e) => handleChangeInvoice(e, 'customer_info')}
-                        value={invoice.customer_info.name}
+                        value={invoiceState.customer_info.name}
                     />
                 </InputController>
                 <InputController>
@@ -57,7 +79,7 @@ export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, hand
                         type='text'
                         name='web_link'
                         onChange={(e) => handleChangeInvoice(e, 'customer_info')}
-                        value={invoice.customer_info.web_link}
+                        value={invoiceState.customer_info.web_link}
                     />
                 </InputController>
                 <InputController>
@@ -65,7 +87,7 @@ export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, hand
                         type='text'
                         name='address1'
                         onChange={(e) => handleChangeInvoice(e, 'customer_info')}
-                        value={invoice.customer_info.address1}
+                        value={invoiceState.customer_info.address1}
                     />
                 </InputController>
                 <InputController>
@@ -73,7 +95,7 @@ export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, hand
                         type='text'
                         name='address2'
                         onChange={(e) => handleChangeInvoice(e, 'customer_info')}
-                        value={invoice.customer_info.address2}
+                        value={invoiceState.customer_info.address2}
                     />
                 </InputController>
                 <InputController>
@@ -81,17 +103,20 @@ export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, hand
                         type='text'
                         name='postal'
                         onChange={(e) => handleChangeInvoice(e, 'customer_info')}
-                        value={invoice.customer_info.postal}
+                        value={invoiceState.customer_info.postal}
                     />
                 </InputController>
                 {
                     !printMode &&
                     <InputController>
-                        <Select value={currency.name} onChange={(e) => handleChangeCurrency(e.target.value)}>
-                            {currencies.map((currency, index) => (
+                        <Select
+                            value={JSON.stringify(currency)}
+                            onChange={(e) => setCurrency(JSON.parse(e.target.value))}
+                        >
+                            {currencies.map((currency) => (
                                 <Option
                                     key={currency.name}
-                                    value={currency.name}
+                                    value={JSON.stringify(currency)}
                                 >
                                     {currency.name}
                                 </Option>
@@ -106,7 +131,7 @@ export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, hand
                         type='text'
                         name='name'
                         onChange={(e) => handleChangeInvoice(e, 'company_info')}
-                        value={invoice.company_info.name}
+                        value={invoiceState.company_info.name}
                         textAlign='right'
                     />
                 </InputController>
@@ -115,7 +140,7 @@ export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, hand
                         type='text'
                         name='web_link'
                         onChange={(e) => handleChangeInvoice(e, 'company_info')}
-                        value={invoice.company_info.web_link}
+                        value={invoiceState.company_info.web_link}
                         textAlign='right'
                     />
                 </InputController>
@@ -124,7 +149,7 @@ export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, hand
                         type='text'
                         name='address1'
                         onChange={(e) => handleChangeInvoice(e, 'company_info')}
-                        value={invoice.company_info.address1}
+                        value={invoiceState.company_info.address1}
                         textAlign='right'
                     />
                 </InputController>
@@ -133,7 +158,7 @@ export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, hand
                         type='text'
                         name='address2'
                         onChange={(e) => handleChangeInvoice(e, 'company_info')}
-                        value={invoice.company_info.address2}
+                        value={invoiceState.company_info.address2}
                         textAlign='right'
                     />
                 </InputController>
@@ -142,7 +167,7 @@ export const Infos = ({ currency, handleChangeCurrency, printMode, invoice, hand
                         type='text'
                         name='postal'
                         onChange={(e) => handleChangeInvoice(e, 'company_info')}
-                        value={invoice.company_info.postal}
+                        value={invoiceState.company_info.postal}
                         textAlign='right'
                     />
                 </InputController>

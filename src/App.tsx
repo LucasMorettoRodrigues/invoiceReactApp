@@ -142,13 +142,7 @@ export const App = () => {
             <InvoiceContainer>
                 <Header />
                 <Branding />
-                <Infos
-                    invoice={invoiceState}
-                    handleChangeInvoice={handleChangeInvoice}
-                    currency={currency}
-                    handleChangeCurrency={(currencyName) => setCurrency(currencies.find(i => i.name === currencyName)!)}
-                    printMode={printMode}
-                />
+                <Infos />
                 <ItemsTable
                     invoice={invoiceState}
                     handleChangeInvoice={handleChangeInvoice}
