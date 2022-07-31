@@ -30,13 +30,18 @@ export const CurrencySelector = () => {
 
     const confirmConvert = window.confirm('Do you want to convert the values to the selected currency?');
 
-    if (confirmConvert) {
-      const newInvoice = await convertValues(invoiceState, formerCurrency.code, newCurrency.code)
-
-      if (newInvoice) {
-        saveInvoice(newInvoice)
-      }
+    if (!confirmConvert) {
+      return
     }
+
+    const newInvoice = await convertValues(invoiceState, formerCurrency.code, newCurrency.code)
+
+    if (!newInvoice) {
+      window.alert('Sorry, it was not possible to convert.')
+      return
+    }
+
+    saveInvoice(newInvoice)
   }
 
   // Set new Invoice and update state
