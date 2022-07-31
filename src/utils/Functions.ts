@@ -4,7 +4,7 @@ import { TInvoice } from '../types/Invoice'
 export const invoiceSubTotal = (invoice: TInvoice) => {
     let total = 0.00;
     invoice.items.forEach(item => {
-        total += (item.qty * item.cost);
+        total += (item.qty * item.cost * (100 - item.discount) / 100);
     });
     return total;
 };
