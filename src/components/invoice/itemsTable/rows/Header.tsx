@@ -1,4 +1,6 @@
+import { useRecoilValue } from "recoil"
 import styled from "styled-components"
+import { currencyRecoilState } from "../../../../state/Currency"
 
 const Container = styled.div`
     display: flex;
@@ -12,17 +14,15 @@ const RowItem = styled.div<{ flex?: number, align?: string }>`
     text-align: ${props => props.align ? props.align : null};
 `
 
-type Props = {
-    currencySymbol: string
-}
+export const Header = () => {
+    const { symbol } = useRecoilValue(currencyRecoilState)
 
-export const Header = ({ currencySymbol }: Props) => {
     return (
         <Container>
             <RowItem style={{ width: '36px' }}></RowItem>
             <RowItem flex={6}>Description</RowItem>
             <RowItem flex={2}>Quantity</RowItem>
-            <RowItem flex={2}>Cost {currencySymbol}</RowItem>
+            <RowItem flex={2}>Cost {symbol}</RowItem>
             <RowItem flex={2} align="right">Total</RowItem>
         </Container>
     )
