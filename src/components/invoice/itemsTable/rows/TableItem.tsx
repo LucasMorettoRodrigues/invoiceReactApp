@@ -27,15 +27,15 @@ const InputController = styled.div`
 type Props = {
     item: Item,
     index: number,
-    backgroundColor: string
 }
 
 const LocalStorage = new LocalStorageService()
 
-export const TableItem = ({ item, index, backgroundColor }: Props) => {
+export const TableItem = ({ item, index }: Props) => {
     const [invoiceState, setInvoiceState] = useRecoilState(invoiceRecoilState)
     const printMode = useRecoilValue(printModeRecoilState)
     const { symbol } = useRecoilValue(currencyRecoilState)
+    const backgroundColor = index % 2 === 1 ? '#FFF' : '#f9f9f9'
 
     // Update Invoice's Item
     const handleChangeItem = (e: ChangeEvent<HTMLInputElement>, index: number) => {

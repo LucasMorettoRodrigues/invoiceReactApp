@@ -20,7 +20,6 @@ export const ItemsTable = () => {
                     key={index}
                     index={index}
                     item={item}
-                    backgroundColor={index % 2 === 1 ? '#FFF' : '#f9f9f9'}
                 />
             ))}
             {
