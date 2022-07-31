@@ -1,11 +1,9 @@
 import styled from 'styled-components';
-import { ChangeEvent, useEffect } from 'react';
-import { DEFAULT_INVOICE, DEFAULT_LOGO } from './constants/DefaultValues';
+import { useEffect } from 'react';
 import { LocalStorageService } from './services/LocalStorageService';
 import { invoiceRecoilState } from './state/Invoice';
 import { logoRecoilState } from './state/Logo';
-import { currencyRecoilState } from './state/Currency';
-import { printModeRecoilState } from './state/PrintMode';
+import { useSetRecoilState } from 'recoil';
 
 // Components
 import { Actions } from './components/invoice/actions/Actions';
@@ -14,9 +12,6 @@ import { Header } from './components/invoice/header/Header';
 import { Infos } from './components/invoice/infos/Infos';
 import { ItemsTable } from './components/invoice/itemsTable/ItemsTable';
 import { Footer } from './components/layout/Footer';
-import { TInvoice } from './types/Invoice';
-import { CurrencyService } from './services/CurrencyService';
-import { useRecoilState } from 'recoil';
 
 const InvoiceContainer = styled.div`
   width: 800px;
@@ -34,11 +29,8 @@ const InvoiceContainer = styled.div`
 const LocalStorage = new LocalStorageService()
 
 export const App = () => {
-
-    const [invoiceState, setInvoiceState] = useRecoilState(invoiceRecoilState);
-    const [logoState, setLogoState] = useRecoilState(logoRecoilState);
-    const [currency, setCurrency] = useRecoilState(currencyRecoilState);
-    const [printMode, setPrintMode] = useRecoilState(printModeRecoilState);
+    const setInvoiceState = useSetRecoilState(invoiceRecoilState);
+    const setLogoState = useSetRecoilState(logoRecoilState);
 
     useEffect(() => {
         (function init() {
@@ -54,53 +46,6 @@ export const App = () => {
         })()
     }, [])
 
-    // Update Invoice
-    const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>, key?: keyof TInvoice) => {
-        if (key === 'customer_info' || key === 'company_info') {
-            saveInvoice({
-                ...invoiceState,
-                [key]: {
-                    ...invoiceState[key],
-                    [e.target.name]: e.target.value
-                }
-            })
-            return
-        }
-
-        saveInvoice({
-            ...invoiceState,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    // Add new Item to Invoice
-    const handleAddItem = () => {
-        const newItem = { description: '', qty: 0, cost: 0 }
-
-        saveInvoice({
-            ...invoiceState,
-            items: [...invoiceState.items, newItem]
-        })
-    }
-
-
-
-    // Set new Invoice and update state
-    const saveInvoice = (newInvoice: TInvoice) => {
-        setInvoiceState(newInvoice)
-        LocalStorage.setInvoice(newInvoice)
-    }
-
-    // Handle Reset Invoice
-    const handleReset = () => {
-        const confirmClear = window.confirm('Are you sure you would like to clear the invoice?');
-        if (confirmClear) {
-            LocalStorage.clearLocalStorage()
-            setLogoState(DEFAULT_LOGO)
-            setInvoiceState(DEFAULT_INVOICE)
-        }
-    }
-
     return (
         <>
             <InvoiceContainer>
@@ -108,11 +53,7 @@ export const App = () => {
                 <Branding />
                 <Infos />
                 <ItemsTable />
-                <Actions
-                    handleReset={handleReset}
-                    handlePrintMode={() => setPrintMode(!printMode)}
-                    printMode={printMode}
-                />
+                <Actions />
             </InvoiceContainer>
             <Footer />
         </>
