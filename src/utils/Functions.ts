@@ -32,8 +32,7 @@ export const convertValues = async (invoice: TInvoice, formerCurrencyCode: strin
         .getConversionRate(formerCurrencyCode, newCurrencyCode)
 
     if (!conversionRate) {
-        alert('Sorry, it was not possible to convert.')
-        return
+        return false
     }
 
     const newInvoice = {
