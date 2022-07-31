@@ -23,6 +23,7 @@ export const Header = () => {
             <RowItem flex={6}>Description</RowItem>
             <RowItem flex={2}>Quantity</RowItem>
             <RowItem flex={2}>Cost {symbol}</RowItem>
+            <RowItem flex={2}>Discount(%)</RowItem>
             <RowItem flex={2} align="right">Total</RowItem>
         </Container>
     )

@@ -109,6 +109,16 @@ export const TableItem = ({ item, index }: Props) => {
                     />
                 </InputController>
             </RowItem>
+            <RowItem flex={2}>
+                <InputController style={{ maxWidth: '73px' }}>
+                    <Input
+                        name="discount"
+                        type="number"
+                        onChange={(e) => handleChangeItem(e, index)}
+                        value={item.discount}
+                    />
+                </InputController>
+            </RowItem>
             <RowItem flex={2} align="right" >{symbol}{(item.qty * item.cost).toFixed(2)}</RowItem>
         </Container>
     )
