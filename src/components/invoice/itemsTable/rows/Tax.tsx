@@ -5,6 +5,7 @@ import { LocalStorageService } from "../../../../services/LocalStorageService"
 import { currencyRecoilState } from "../../../../state/Currency"
 import { invoiceRecoilState } from "../../../../state/Invoice"
 import { TInvoice } from "../../../../types/Invoice"
+import { calculateTax } from "../../../../utils/Functions"
 import { Input } from "../../../UI/Input"
 
 const Container = styled.div<{ backgroundColor: string }>`
@@ -31,18 +32,7 @@ export const Tax = () => {
     const backgroundColor = invoiceState.items.length % 2 === 1 ? '#FFF' : '#f9f9f9'
 
     // Update Invoice
-    const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>, key?: keyof TInvoice) => {
-        if (key === 'customer_info' || key === 'company_info') {
-            saveInvoice({
-                ...invoiceState,
-                [key]: {
-                    ...invoiceState[key],
-                    [e.target.name]: e.target.value
-                }
-            })
-            return
-        }
-
+    const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>) => {
         saveInvoice({
             ...invoiceState,
             [e.target.name]: e.target.value
@@ -69,7 +59,7 @@ export const Tax = () => {
                 </InputController>
             </RowItem>
             <RowItem flex={1} align="right">
-                {symbol}{invoiceState.tax.toFixed(2)}
+                {symbol}{calculateTax(invoiceState).toFixed(2)}
             </RowItem>
         </Container>
     )
