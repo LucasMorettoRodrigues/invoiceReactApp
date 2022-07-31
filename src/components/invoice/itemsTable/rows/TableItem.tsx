@@ -119,7 +119,7 @@ export const TableItem = ({ item, index }: Props) => {
                     />
                 </InputController>
             </RowItem>
-            <RowItem flex={2} align="right" >{symbol}{(item.qty * item.cost).toFixed(2)}</RowItem>
+            <RowItem flex={2} align="right" >{symbol}{(item.qty * item.cost * (100 - item.discount) / 100).toFixed(2)}</RowItem>
         </Container>
     )
 }
