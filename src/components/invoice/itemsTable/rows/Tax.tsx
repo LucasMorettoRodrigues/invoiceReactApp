@@ -1,5 +1,10 @@
 import { ChangeEvent } from "react"
+import { useRecoilState, useRecoilValue } from "recoil"
 import styled from "styled-components"
+import { LocalStorageService } from "../../../../services/LocalStorageService"
+import { currencyRecoilState } from "../../../../state/Currency"
+import { invoiceRecoilState } from "../../../../state/Invoice"
+import { TInvoice } from "../../../../types/Invoice"
 import { Input } from "../../../UI/Input"
 
 const Container = styled.div<{ backgroundColor: string }>`
@@ -18,15 +23,37 @@ const InputController = styled.div`
     margin-left: 5px;
 `
 
-type Props = {
-    value: number,
-    handleOnChange: (e: ChangeEvent<HTMLInputElement>) => void
-    tax: number,
-    currencySymbol: string,
-    backgroundColor: string
-}
+const LocalStorage = new LocalStorageService()
 
-export const Tax = ({ value, handleOnChange, tax, currencySymbol, backgroundColor }: Props) => {
+export const Tax = () => {
+    const [invoiceState, setInvoiceState] = useRecoilState(invoiceRecoilState)
+    const { symbol } = useRecoilValue(currencyRecoilState)
+    const backgroundColor = invoiceState.items.length % 2 === 1 ? '#FFF' : '#f9f9f9'
+
+    // Update Invoice
+    const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>, key?: keyof TInvoice) => {
+        if (key === 'customer_info' || key === 'company_info') {
+            saveInvoice({
+                ...invoiceState,
+                [key]: {
+                    ...invoiceState[key],
+                    [e.target.name]: e.target.value
+                }
+            })
+            return
+        }
+
+        saveInvoice({
+            ...invoiceState,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    // Set new Invoice and update state
+    const saveInvoice = (newInvoice: TInvoice) => {
+        setInvoiceState(newInvoice)
+        LocalStorage.setInvoice(newInvoice)
+    }
 
     return (
         <Container backgroundColor={backgroundColor}>
@@ -34,15 +61,15 @@ export const Tax = ({ value, handleOnChange, tax, currencySymbol, backgroundColo
                 Tax(%):
                 <InputController>
                     <Input
-                        onChange={(e) => handleOnChange(e)}
+                        onChange={(e) => handleChangeInvoice(e)}
                         name='tax'
-                        value={tax}
+                        value={invoiceState.tax}
                         type='number'
                     />
                 </InputController>
             </RowItem>
             <RowItem flex={1} align="right">
-                {currencySymbol}{value.toFixed(2)}
+                {symbol}{invoiceState.tax.toFixed(2)}
             </RowItem>
         </Container>
     )
