@@ -18,4 +18,5 @@ export type Item = {
     qty: number,
     description: string,
     cost: number
+    discount: number
 }
