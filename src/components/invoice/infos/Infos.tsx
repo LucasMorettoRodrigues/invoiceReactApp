@@ -7,6 +7,7 @@ import { printModeRecoilState } from "../../../state/PrintMode"
 import { invoiceRecoilState } from "../../../state/Invoice"
 import { LocalStorageService } from "../../../services/LocalStorageService"
 import { CurrencySelector } from "./CurrencySelector"
+import { editInvoice } from "../../../utils/Functions"
 
 const RowInfosContainer = styled.div`
   display: flex;
@@ -33,21 +34,8 @@ export const Infos = () => {
 
     // Update Invoice
     const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>, key?: keyof TInvoice) => {
-        if (key === 'customer_info' || key === 'company_info') {
-            saveInvoice({
-                ...invoiceState,
-                [key]: {
-                    ...invoiceState[key],
-                    [e.target.name]: e.target.value
-                }
-            })
-            return
-        }
-
-        saveInvoice({
-            ...invoiceState,
-            [e.target.name]: e.target.value
-        })
+        const newInvoice = editInvoice(e, invoiceState, key)
+        saveInvoice(newInvoice)
     }
 
     // Set new Invoice and update state

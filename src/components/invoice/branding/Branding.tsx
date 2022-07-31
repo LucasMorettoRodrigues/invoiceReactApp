@@ -6,6 +6,7 @@ import { invoiceRecoilState } from "../../../state/Invoice"
 import { logoRecoilState } from "../../../state/Logo"
 import { printModeRecoilState } from "../../../state/PrintMode"
 import { TInvoice } from "../../../types/Invoice"
+import { editInvoice } from "../../../utils/Functions"
 import { Input } from "../../UI/Input"
 
 const Container = styled.div`
@@ -74,22 +75,9 @@ export const Branding = () => {
     };
 
     // Update Invoice
-    const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>, key?: keyof TInvoice) => {
-        if (key === 'customer_info' || key === 'company_info') {
-            saveInvoice({
-                ...invoiceState,
-                [key]: {
-                    ...invoiceState[key],
-                    [e.target.name]: e.target.value
-                }
-            })
-            return
-        }
-
-        saveInvoice({
-            ...invoiceState,
-            [e.target.name]: e.target.value
-        })
+    const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>) => {
+        const newInvoice = editInvoice(e, invoiceState)
+        saveInvoice(newInvoice)
     }
 
     // Set new Invoice and update state

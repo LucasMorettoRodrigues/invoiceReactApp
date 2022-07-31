@@ -5,7 +5,7 @@ import { LocalStorageService } from "../../../../services/LocalStorageService"
 import { currencyRecoilState } from "../../../../state/Currency"
 import { invoiceRecoilState } from "../../../../state/Invoice"
 import { TInvoice } from "../../../../types/Invoice"
-import { calculateTax } from "../../../../utils/Functions"
+import { calculateTax, editInvoice } from "../../../../utils/Functions"
 import { Input } from "../../../UI/Input"
 
 const Container = styled.div<{ backgroundColor: string }>`
@@ -33,10 +33,8 @@ export const Tax = () => {
 
     // Update Invoice
     const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>) => {
-        saveInvoice({
-            ...invoiceState,
-            [e.target.name]: e.target.value
-        })
+        const newInvoice = editInvoice(e, invoiceState)
+        saveInvoice(newInvoice)
     }
 
     // Set new Invoice and update state

@@ -6,6 +6,7 @@ import { ChangeEvent } from "react"
 import { invoiceRecoilState } from "../../../state/Invoice"
 import { TInvoice } from "../../../types/Invoice"
 import { LocalStorageService } from "../../../services/LocalStorageService"
+import { convertValues } from "../../../utils/Functions"
 
 const Select = styled.select`
     font-size: 14px;
@@ -20,6 +21,7 @@ export const CurrencySelector = () => {
   const [currency, setCurrency] = useRecoilState(currencyRecoilState)
   const [invoiceState, setInvoiceState] = useRecoilState(invoiceRecoilState)
 
+  // Set New Currency and Convert
   const handleChangeCurrency = async (e: ChangeEvent<HTMLSelectElement>) => {
     const formerCurrency = currency
     const newCurrency = JSON.parse(e.target.value)
@@ -29,30 +31,12 @@ export const CurrencySelector = () => {
     const confirmConvert = window.confirm('Do you want to convert the values to the selected currency?');
 
     if (confirmConvert) {
-      convertValues(formerCurrency.code, newCurrency.code)
+      const newInvoice = await convertValues(invoiceState, formerCurrency.code, newCurrency.code)
+
+      if (newInvoice) {
+        saveInvoice(newInvoice)
+      }
     }
-  }
-
-  const convertValues = async (formerCurrencyCode: string, newCurrencyCode: string) => {
-    const conversionRate = await currencyService
-      .getConversionRate(formerCurrencyCode, newCurrencyCode)
-
-    if (!conversionRate) {
-      alert('Sorry, it was not possible to convert.')
-      return
-    }
-
-    const newInvoice = {
-      ...invoiceState,
-      items: invoiceState.items.map(item => (
-        {
-          ...item,
-          cost: Math.round(item.cost * conversionRate * 100) / 100
-        }
-      ))
-    }
-
-    saveInvoice(newInvoice)
   }
 
   // Set new Invoice and update state
