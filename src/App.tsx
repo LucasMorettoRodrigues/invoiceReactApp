@@ -73,20 +73,6 @@ export const App = () => {
         })
     }
 
-    // Update Invoice's Item
-    const handleChangeItem = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-        const newItem = { ...invoiceState.items[index], [e.target.name]: e.target.value }
-
-        saveInvoice({
-            ...invoiceState,
-            items: invoiceState.items.map((item, itemIndex) => (
-                itemIndex === index
-                    ? newItem
-                    : item
-            ))
-        })
-    }
-
     // Add new Item to Invoice
     const handleAddItem = () => {
         const newItem = { description: '', qty: 0, cost: 0 }
@@ -97,16 +83,7 @@ export const App = () => {
         })
     }
 
-    // Remove Item from Invoice
-    const handleRemoveItem = (index: number) => {
-        let newItems = [...invoiceState.items]
-        newItems.splice(index, 1)
 
-        saveInvoice({
-            ...invoiceState,
-            items: newItems
-        })
-    }
 
     // Set new Invoice and update state
     const saveInvoice = (newInvoice: TInvoice) => {
@@ -130,15 +107,7 @@ export const App = () => {
                 <Header />
                 <Branding />
                 <Infos />
-                <ItemsTable
-                    invoice={invoiceState}
-                    handleChangeInvoice={handleChangeInvoice}
-                    handleChangeItem={handleChangeItem}
-                    handleAddItem={handleAddItem}
-                    handleRemoveItem={handleRemoveItem}
-                    printMode={printMode}
-                    currencySymbol={currency.symbol}
-                />
+                <ItemsTable />
                 <Actions
                     handleReset={handleReset}
                     handlePrintMode={() => setPrintMode(!printMode)}
