@@ -42,11 +42,7 @@ export const ItemsTable = ({ invoice, handleChangeInvoice, handleChangeItem, han
             }
             <SubTotal />
             <Tax />
-            <GrandTotal
-                value={calculateGrandTotal(invoice)}
-                currencySymbol={currencySymbol}
-                backgroundColor={invoice.items.length % 2 === 0 ? '#FFF' : '#f9f9f9'}
-            />
+            <GrandTotal />
         </>
     )
 }
