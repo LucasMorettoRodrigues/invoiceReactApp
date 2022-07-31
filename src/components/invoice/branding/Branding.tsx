@@ -1,5 +1,10 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, useRef, useState } from "react"
+import { useRecoilState, useRecoilValue } from "recoil"
 import styled from "styled-components"
+import { LocalStorageService } from "../../../services/LocalStorageService"
+import { invoiceRecoilState } from "../../../state/Invoice"
+import { logoRecoilState } from "../../../state/Logo"
+import { printModeRecoilState } from "../../../state/PrintMode"
 import { TInvoice } from "../../../types/Invoice"
 import { Input } from "../../UI/Input"
 
@@ -40,22 +45,57 @@ const Button = styled.button`
     }
 `
 
-type Props = {
-    invoice: TInvoice,
-    logo: string
-    handleChangeInvoice: (e: ChangeEvent<HTMLInputElement>) => void
-    printMode: boolean,
-    readUrl: (input: ChangeEvent<HTMLInputElement>) => void
-}
+const LocalStorage = new LocalStorageService()
 
-export const Branding = ({ invoice, handleChangeInvoice, printMode, logo, readUrl }: Props) => {
+export const Branding = () => {
     const inputRef = useRef<HTMLInputElement>(null)
     const imgRef = useRef<HTMLImageElement>(null)
+
     const [logoRemoved, setLogoRemoved] = useState(false)
+    const [invoiceState, setInvoiceState] = useRecoilState(invoiceRecoilState)
+    const [logoState, setLogoState] = useRecoilState(logoRecoilState)
+    const printMode = useRecoilValue(printModeRecoilState)
 
     // Triggers the logo chooser click event
     const handleEditLogo = () => {
         inputRef.current && inputRef.current.click()
+    }
+
+    // Reads a url and set new logo
+    const readUrl = (input: ChangeEvent<HTMLInputElement>) => {
+        if (input.target.files && input.target.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e: any) {
+                setLogoState(e.target.result)
+                LocalStorage.setLogo(e.target.result);
+            }
+            reader.readAsDataURL(input.target.files[0]);
+        }
+    };
+
+    // Update Invoice
+    const handleChangeInvoice = (e: ChangeEvent<HTMLInputElement>, key?: keyof TInvoice) => {
+        if (key === 'customer_info' || key === 'company_info') {
+            saveInvoice({
+                ...invoiceState,
+                [key]: {
+                    ...invoiceState[key],
+                    [e.target.name]: e.target.value
+                }
+            })
+            return
+        }
+
+        saveInvoice({
+            ...invoiceState,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    // Set new Invoice and update state
+    const saveInvoice = (newInvoice: TInvoice) => {
+        setInvoiceState(newInvoice)
+        LocalStorage.setInvoice(newInvoice)
     }
 
     return (
@@ -68,14 +108,14 @@ export const Branding = ({ invoice, handleChangeInvoice, printMode, logo, readUr
                     name='invoice_number'
                     fontWeight='bold'
                     onChange={(e) => handleChangeInvoice(e)}
-                    value={invoice.invoice_number}
+                    value={invoiceState.invoice_number}
                 />
             </InnerContainer>
             <InnerContainer>
                 <input onChange={readUrl} ref={inputRef} style={{ display: 'none' }} type="file" id="imgInp" />
                 {
                     !logoRemoved &&
-                    <Image ref={imgRef} src={logo} alt="your image" />
+                    <Image ref={imgRef} src={logoState} alt="your image" />
                 }
                 {
                     !printMode &&

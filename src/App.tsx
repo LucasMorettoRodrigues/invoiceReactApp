@@ -141,13 +141,7 @@ export const App = () => {
         <>
             <InvoiceContainer>
                 <Header />
-                <Branding
-                    invoice={invoiceState}
-                    handleChangeInvoice={handleChangeInvoice}
-                    printMode={printMode}
-                    logo={logoState}
-                    readUrl={readUrl}
-                />
+                <Branding />
                 <Infos
                     invoice={invoiceState}
                     handleChangeInvoice={handleChangeInvoice}
