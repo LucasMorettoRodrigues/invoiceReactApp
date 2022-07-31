@@ -19,7 +19,7 @@ export const DEFAULT_INVOICE = {
         postal: 'M5S 1B6'
     },
     items: [
-        { qty: 10, description: 'Gadget', cost: 9.95 }
+        { qty: 10, description: 'Gadget', cost: 9.95, discount: 0 }
     ]
 }
 
