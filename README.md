@@ -43,7 +43,9 @@ to build app for production.
 - Write unit tests with Jest.
 - Use Recoil for state management.
 - Convert currency values using external API.
-- Run AngularJS and React using angular2react.
+- Run AngularJS and React using angular2react. 
+
+(Angular component in src/components/invoice/itemsTable/rows/angular/angular-component.js)
 
 #### Corrections: 
 
