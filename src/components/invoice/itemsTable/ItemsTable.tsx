@@ -1,5 +1,4 @@
 import { AddItem } from "./rows/AddItem"
-import { GrandTotal } from "./rows/GrandTotal"
 import { Header } from "./rows/Header"
 import { TableItem } from "./rows/TableItem"
 import { SubTotal } from "./rows/SubTotal"
@@ -7,6 +6,8 @@ import { Tax } from "./rows/Tax"
 import { useRecoilValue } from "recoil"
 import { invoiceRecoilState } from "../../../state/Invoice"
 import { printModeRecoilState } from "../../../state/PrintMode"
+import { GrandTotalAngular } from "./rows/GrandTotalAngular"
+import { GrandTotal } from "./rows/GrandTotal"
 
 export const ItemsTable = () => {
     const invoice = useRecoilValue(invoiceRecoilState)
@@ -28,7 +29,7 @@ export const ItemsTable = () => {
             }
             <SubTotal />
             <Tax />
-            <GrandTotal />
+            <GrandTotalAngular />
         </>
     )
 }
